@@ -16,19 +16,31 @@ class Product {
 
 class ProductManager {
   constructor() {
+    
     this.products = [];
     this.nextProductId = 1;
+   
   }
 
-  addProduct(title, description, price, thumbnail, code, stock) {
+  addProduct({title, description, price, thumbnail, code, stock}) {
     if (this.isCodeUnique(code) && this.areFieldsValid(title, description, price, thumbnail, code, stock)) {
       const product = new Product(title, description, price, thumbnail, code, stock, this.nextProductId);
-      this.products.push(product);
+      this.products.push(Product);
       this.nextProductId++;
       console.log("Se agrego satisfactoriamente el producto");
     } else {
       console.log("No se pudo agregar el producto. Por favor revisar");
     }
+    this.products.push({
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      stock,
+      
+    })
+  
   }
 
   getProducts() {
@@ -61,9 +73,13 @@ class ProductManager {
   }
 }
 
-const p1 = new product ()
 
-p1.addProduct ({
+
+const p = new ProductManager()
+
+
+
+p.addProduct ({
   title: 'producto prueba',
   description: 'Este es un producto prueba',
   price:200,
@@ -73,4 +89,5 @@ p1.addProduct ({
 
 })
 
-console.log(p1)
+console.log(p.addProduct)
+console.log(p)
