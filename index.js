@@ -25,9 +25,9 @@ class ProductManager {
       const product = new Product(title, description, price, thumbnail, code, stock, this.nextProductId);
       this.products.push(product);
       this.nextProductId++;
-      console.log("Product added successfully!");
+      console.log("Se agrego satisfactoriamente el producto");
     } else {
-      console.log("Failed to add product. Please check the fields.");
+      console.log("No se pudo agregar el producto. Por favor revisar");
     }
   }
 
@@ -41,7 +41,7 @@ class ProductManager {
         return product;
       }
     }
-    console.log("Not found");
+    console.log("No encontrado");
   }
 
   isCodeUnique(code) {
@@ -60,3 +60,17 @@ class ProductManager {
     return false;
   }
 }
+
+const p1 = new product ()
+
+p1.addProduct ({
+  title: 'producto prueba',
+  description: 'Este es un producto prueba',
+  price:200,
+  thumbnail: 'Sin imagen',
+  code: 'abc123',
+  stock:25
+
+})
+
+console.log(p1)
