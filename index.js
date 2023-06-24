@@ -89,5 +89,6 @@ p.addProduct ({
 
 })
 
+
 console.log(p.addProduct)
 console.log(p)
