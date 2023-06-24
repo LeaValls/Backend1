@@ -1,8 +1,9 @@
 const fs = require('fs');
+const path = require('path')
 
 class ProductManager {
-  constructor(filePath) {
-    this.filePath = filePath;
+  constructor(path) {
+    this.filePath = path;
   }
 
   getNextId() {
@@ -73,7 +74,7 @@ class ProductManager {
 }
 
 // Ejemplo de uso
-const productManager = new ProductManager(filePath.join(__dirname, 'products.json'));
+const productManager = new ProductManager(path.join(__dirname, 'products.json'));
 
 // Agregar un producto
 const newProduct = {
@@ -103,6 +104,6 @@ const updatedFields = {
 productManager.updateProduct(productId, updatedFields);
 
 // Eliminar un producto
-productManager.deleteProduct(productId);
+//productManager.deleteProduct(productId);
 
-console.log(updatedFields)
+console.log(allProducts)
