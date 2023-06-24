@@ -92,7 +92,7 @@ const allProducts = productManager.getProducts();
 console.log(allProducts);
 
 // Obtener un producto por su ID
-const productId = 1; // Suponiendo que el primer producto tiene ID 1
+const productId = 1; 
 const productById = productManager.getProductById(productId);
 console.log(productById);
 
