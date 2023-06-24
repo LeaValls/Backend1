@@ -73,7 +73,7 @@ class ProductManager {
   }
 }
 
-// Ejemplo de uso
+
 const productManager = new ProductManager(path.join(__dirname, 'products.json'));
 
 // Agregar un producto
@@ -106,4 +106,3 @@ productManager.updateProduct(productId, updatedFields);
 // Eliminar un producto
 //productManager.deleteProduct(productId);
 
-console.log(allProducts)
