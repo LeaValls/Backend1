@@ -1,6 +1,6 @@
 const express = require('express');
-const productsRouter = require('./routes/products');
-const cartsRouter = require('./routes/carts');
+const productsRouter = require('./routers/products');
+const cartsRouter = require('./routers/carts');
 
 const app = express();
 const port = 8080;
