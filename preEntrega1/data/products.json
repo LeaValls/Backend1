@@ -1,0 +1,82 @@
+[
+    {
+      "id": 1,
+      "title": "Masala",
+      "description": "Té negro tipo Assam en hebras enteras orgánico con canela, jengibre, cardamomo, pimienta negra, clavo y anís estrellado",
+      "price": 1450,
+      "stock": 20,
+      "keywords": ["Te negro", "Blends", "Te", "Assam", "Organico"]
+    },
+    {
+      "id": 2,
+      "title": "Ayurveda",
+      "description": "Té negro tipo Assam en hebras enteras orgánico con canela, jengibre, cardamomo, clavo y 3 variedades de Tulsi orgánico.",
+      "price": 1550,
+      "stock": 20,
+      "keywords": ["Te negro", "Blends", "Te", "Assam", "Organico"]
+    },
+    {
+      "id": 3,
+      "title": "Olivia",
+      "description": "Las tisanas son infusiones con propiedades medicinales que no contienen té y por lo tanto no tiene cafeína.  Es rica en antioxidantes, antibacteriana, disminuye el estrés, digestiva, analgésica, alivia el estreñimiento y refuerza el sistema inmunitario.",
+      "price": 1250,
+      "stock": 10,
+      "keywords": ["Tisana", "Infusiones", "antioxidantes"]
+    },
+    {
+      "id": 4,
+      "title": "Jazmin",
+      "description": "Té verde.",
+      "price": 1450,
+      "stock": 10,
+      "keywords": ["Te", "Verde"]
+    },
+    {
+      "id": 5,
+      "title": "Tazones",
+      "description": "Tazones de ceramica de 250ml... Reir, Vivir, Paz, Volar.",
+      "price": 1850,
+      "stock": 10,
+      "keywords": ["Tazones", "Ceramica", "Reir", "Vivir", "Paz", "Volar"]
+    },
+    {
+      "id": 6,
+      "title": "Difusores",
+      "description": "Difusores sustentables: Presentación frasco de vidrio ambar x 250ml con varilas rattan a elección en estuche ecokraft. Eucalipto & Menta/Naranja & Especias/Peonía & Oliva/Vainilla Bourbon.",
+      "price": 2850,
+      "stock": 30,
+      "keywords": ["Difusores", "Rattan", "Sustentables"]
+    },
+    {
+      "id": 7,
+      "title": "Infusores de Te",
+      "description": "Infusores de te con detalle ceramico (hecho a mano). Diseño exclusivo.",
+      "price": 1750,
+      "stock": 30,
+      "keywords": ["Infusores", "Ceramica", "Te"]
+    },
+    {
+      "id": 8,
+      "title": "Indian Lassi",
+      "description": "Te negro en hebras enteras organico con jengibre, lemongrass y miel.",
+      "price": 1450,
+      "stock": 3,
+      "keywords": ["Te negro", "Blends", "Te", "Assam", "Organico", "Te indio"]
+    },
+    {
+      "id": 9,
+      "title": "Detox-Vitalidad",
+      "description": "Es una riquisima combinacion de arandanos, rosa mosqueta, frutilla e hibiscus.",
+      "price": 1650,
+      "stock": 10,
+      "keywords": ["Tisanas", "Detox", "Vitalidad", "Hibiscus"]
+    },
+    {
+      "id": 10,
+      "title": "Relax-Equilibrio",
+      "description": "Es una bomba explosiva de aromas y sabor con cascaritas de naranja, manzanilla, menta, poleo y peperina.",
+      "price": 1650,
+      "stock": 15,
+      "keywords": ["Tisanas", "Relax", "Equilibrio", "Peperina"]
+    }
+  ]
