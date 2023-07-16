@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
-const expressHandlebars = require('express-handelbars');
+const path = require('path')
+const handlebars = require('express-handlebars');
 const productsRouter = require('./routers/products');
 
 
-app.engine('handlebars', expressHandlebars());
+app.engine('handlebars', handlebars.engine ());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 
