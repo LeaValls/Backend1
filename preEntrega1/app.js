@@ -43,7 +43,8 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = 8080;
-http.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT}`);
+const port = 8080;
+
+app.listen(port, () => {
+  console.log(`Servidor escuchando en el puerto ${port}`);
 });
