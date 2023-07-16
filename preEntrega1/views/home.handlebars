@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Productos</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Lista de Productos</h1>
+  <ul>
+    {{#each products}}
+    <li>{{this.title}} - {{this.price}}</li>
+    {{/each}}
+  </ul>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+
+    socket.on('newProduct', (product) => {
+      // Agregar el producto a la lista
+      const li = document.createElement('li');
+      li.textContent = `${product.title} - ${product.price}`;
+      document.querySelector('ul').appendChild(li);
+    });
+
+    socket.on('deleteProduct', (productId) => {
+      // Eliminar el producto de la lista
+      const lis = document.querySelectorAll('ul li');
+      for (let li of lis) {
+        if (li.textContent.includes(productId)) {
+          li.remove();
+          break;
+        }
+      }
+    });
+  </script>
+</body>
+</html>

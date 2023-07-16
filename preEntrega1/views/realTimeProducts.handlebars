@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Productos en tiempo real</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <h1>Lista de Productos (Tiempo Real)</h1>
+  <ul>
+    {{#each products}}
+    <li>{{this.title}} - {{this.price}}</li>
+    {{/each}}
+  </ul>
+  <form id="productForm">
+    <label for="title">Título:</label>
+    <input type="text" id="title" name="title">
+    <label for="price">Precio:</label>
+    <input type="text" id="price" name="price">
+    <button type="submit">Agregar Producto</button>
+  </form>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const form = document.getElementById('productForm');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const price = document.getElementById('price').value;
+
+      // Enviar el producto al servidor
+      socket.emit('addProduct', { title, price });
+
+      // Limpiar los campos del formulario
+      document.getElementById('title').value = '';
+      document.getElementById('price').value = '';
+    });
+
+    socket.on('newProduct', (product) => {
+      // Agregar el producto a la lista
+      const li = document.createElement('li');
+      li.textContent = `${product.title} - ${product.price}`;
+      document.querySelector('ul').appendChild(li);
+    });
+
+    socket.on('deleteProduct', (productId) => {
+      // Eliminar el producto de la lista
+      const lis = document.querySelectorAll('ul li');
+      for (let li of lis) {
+        if (li.textContent.includes(productId)) {
+          li.remove();
+          break;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
