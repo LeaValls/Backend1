@@ -1,6 +1,6 @@
 const ProductManager = require('../models/ProductManager');
 
-const productManager = new ProductManager('data/products.json');
+const productManager = new ProductManager('./preEntrega1/data/products.json');
 
 const getProducts = async (req, res) => {
   try {

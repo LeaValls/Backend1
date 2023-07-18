@@ -46,5 +46,5 @@ io.on('connection', (socket) => {
 const port = 8080;
 
 app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
+  console.log(`Servidor escuchando en el puerto http://localhost:${port}`);
 });
