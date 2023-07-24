@@ -5,9 +5,7 @@ const productManager = new ProductManager('products.json');
 
 const router = Router();
 
-function getRandomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
 
 router.get('/', async (req, res) => {
 
@@ -25,8 +23,8 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.get('/carrito', (req, res) => {
-  res.render('carrito', {
+router.get('/carts', (req, res) => {
+  res.render('carts', {
     numItems: 2,
     title: 'Carrito'
   });

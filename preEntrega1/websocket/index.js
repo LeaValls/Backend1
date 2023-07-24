@@ -1,5 +1,5 @@
 const ProductManager = require('../models/ProductManager')
-const CartManager = require('../models/cartManager')
+const CartManager = require('../models/CartManager')
 const productManager = new ProductManager('products.json')
 const cartManager = new CartManager('cart.json')
 
