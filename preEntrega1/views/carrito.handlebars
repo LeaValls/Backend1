@@ -1,0 +1,23 @@
+<div class="uk-flex uk-flex-between align-cart">
+  <div>
+    <h5 class="uk-margin-remove">Total: $</h5>
+  </div>
+  <div>
+    <a href="/pedido">
+      <button class="uk-margin-remove uk-button uk-button-secondary uk-button-small uk-margin-top">Continuar</button>
+    </a>
+  </div>
+</div>
+<div id="productsInCart" class="uk-margin-top uk-child-width-1-4@m" uk-grid>
+  <div id="{{id}}">
+    <div class="uk-card uk-card-default">
+      <div class="uk-card-body">
+        <h3 class="uk-card-title">{{ this.title }}</h3>
+        <h5> ${{this.price}}</h5>
+        
+        <br>
+        <button class="uk-button uk-button-secondary uk-button-small uk-margin-top">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

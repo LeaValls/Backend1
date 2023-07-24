@@ -1,50 +1,45 @@
-const express = require('express');
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const express = require('express')
+const http = require('http')
 const path = require('path')
-const handlebars = require('express-handlebars');
-const productsRouter = require('./routers/products');
+const handlebars = require('express-handlebars')
+const { Server } = require("socket.io");
+
+const Routes = require('./routers/index')
+const socketManager = require('./websocket')
+
+const app = express() 
+const server = http.createServer(app) 
+const io = new Server(server) 
+
+app.engine('handlebars', handlebars.engine()) 
+app.set('views', path.join(__dirname, '/views')) 
+app.set('view engine', 'handlebars') 
+
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use('/static', express.static(path.join(__dirname + '/public')))
 
 
-app.engine('handlebars', handlebars.engine ());
-app.set('view engine', 'handlebars');
-app.set('views', __dirname + '/views');
-
-
-app.use(express.static('public'));
-
-
-app.use(express.urlencoded({ extended: true }));
-
-
-app.use('/products', productsRouter);
-
-
-io.on('connection', (socket) => {
-  console.log('Usuario conectado');
-
-
-  socket.on('addProduct', (product) => {
- 
-    io.emit('newProduct', product);
-  });
-
-  socket.on('deleteProduct', (productId) => {
-
-
+app.use((req, res, next) => {
   
-    io.emit('deleteProduct', productId);
-  });
+
+  req.user = {
+    name: "Jonh",
+    role: "admin"
+  }
+
+  next()
+})
 
 
-  socket.on('disconnect', () => {
-    console.log('Usuario desconectado');
-  });
-});
 
-const port = 8080;
+app.use('/', Routes.home)
+app.use('/api', Routes.api)
 
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto http://localhost:${port}`);
-});
+io.on('connection', socketManager)
+
+const port = 8080
+
+server.listen(port, () => {
+  console.log(`Express Server listening at http://localhost:${port}`)
+})
