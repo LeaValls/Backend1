@@ -13,8 +13,8 @@ try {
   
   // ${SCHEMA}://{USER}:{PASSWORD}@{HOSTNAME}:${PORT}/${DATABASE} -> LOCAL mongodb://localhost:27017/ecommerce
   // mongoose.connect("mongodb://localhost:27017/ecommerce")
-  
-  await mongoose.connect("mongodb+srv://app:VU61xL88zxcvzJJB@cluster0.ryzcf1s.mongodb.net/?retryWrites=true&w=majorityy")
+
+  await mongoose.connect("mongodb+srv://app:vXqYhVf2Qj1FXYXL@cluster0.ryzcf1s.mongodb.net/?retryWrites=true&w=majorityy")
 
   const app = express() 
   const server = http.createServer(app) 
