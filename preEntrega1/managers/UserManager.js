@@ -1,11 +1,9 @@
 const fs = require('fs/promises')
 const path = require('path')
 
-
-
 class ProductManager {
 
-  #products = []
+  #users = []
 
   constructor(filename) {
     this.filename = filename
@@ -14,44 +12,44 @@ class ProductManager {
 
   #readFile = async () => {
     const data = await fs.readFile(this.filepath, 'utf-8')
-    this.#products = JSON.parse(data)
+    this.#users = JSON.parse(data)
   }
 
   #writeFile = async() => {
-    const data = JSON.stringify(this.#products, null, 2)
+    const data = JSON.stringify(this.#users, null, 2)
     await fs.writeFile(this.filepath, data)
   }
 
   async getAll() {
     await this.#readFile()
 
-    return this.#products
+    return this.#users
   }
 
   async getById(id) {
     await this.#readFile()
 
-    return this.#products.find(p => p.id == id)
+    return this.#users.find(p => p.id == id)
   }
 
-  async create(product) {
+  async create(user) {
     await this.#readFile()
 
-    const id = (this.#products[this.#products.length - 1]?.id || 0) + 1
+    const id = (this.#users[this.#users.length - 1]?.id || 0) + 1
 
-    const newProduct = {
-      ...product,
+    const newUser = {
+      ...user,
       id
     }
 
-    this.#products.push(newProduct)
+    this.#users.push(newUser)
 
     await this.#writeFile()
 
-    return newProduct
+    return newUser
   }
 
-  async save(id, product) {
+  async save(id, user) {
     await this.#readFile()
 
     const existing = await this.getById(id)
@@ -61,18 +59,16 @@ class ProductManager {
     }
 
     const {
-      title,
-      description,
-      stock,
-      price,
-      keywords
-    } = product
+      email,
+      firstname,
+      lastname,
+      username
+    } = user
 
-    existing.title = title
-    existing.description = description
-    existing.stock = stock
-    existing.price = price
-    existing.keywords = keywords
+    existing.email = email
+    existing.firstname = firstname
+    existing.lastname = lastname
+    existing.username = username
 
     await this.#writeFile()
   }
@@ -80,12 +76,12 @@ class ProductManager {
   async delete(id) {
     await this.#readFile()
 
-    this.#products = this.#products.filter(p => p.id != id)
+    /// operadores
+
+    this.#users = this.#users.filter(p => p.id != id)
 
     await this.#writeFile()
   }
-
-  
 }
 
 module.exports = ProductManager

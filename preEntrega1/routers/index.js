@@ -2,6 +2,7 @@ const { Router } = require('express')
 const ProductRoutes = require('./api/products.router')
 const HomeRoutes = require('./home.router')
 const UserRoutes = require('./api/user')
+const AdminRoutes = require('./admin.router')
 
 
 const api = Router();
@@ -12,6 +13,7 @@ api.use('/user', UserRoutes);
 const home = Router()
 
 home.use('/', HomeRoutes)
+home.use('/admin', AdminRoutes)
 
 
 module.exports = {
