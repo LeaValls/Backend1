@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
   let filtrados = products
 
   if (search) {
-    /// filtrar
+    
     filtrados = filtrados
       .filter(p => p.keywords.includes(search.toLowerCase()) || p.title.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase()))
   } 

@@ -3,8 +3,7 @@ const productManager = require('../managers/ProductManager')
 
 const router = Router()
 
-// renderiza vistas
-// no es rest
+
 
 router.use((req, res, next) => {
   if(req.user?.role !== 'admin') {

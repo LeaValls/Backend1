@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const path = require('path');
-const ProductManager = require('../models/ProductManager');
-const productManager = new ProductManager('products.json');
+const productManager = require('../managers/ProductManager');
+
 
 const router = Router();
+
+
 
 
 
@@ -23,10 +25,28 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.get('/carts', (req, res) => {
-  res.render('carts', {
+router.get('/chat', (req, rest) => {
+  rest.render('chat')
+})
+
+router.get ('/realtimeproducts', async (req, rest) => {
+  const product = await productManager.getAll()
+
+  res.tender('realTimeProducts', {
+    title: 'Real Time',
+    products,
+    user: {
+      ...req.user,
+      isAdmin: req.user.role == 'admin'
+    },
+    style: 'home'
+  })
+})
+
+router.get('/cart', (req, res) => {
+  res.render('cart', {
     numItems: 2,
-    title: 'Carrito'
+    title: 'Cart'
   });
 });
 

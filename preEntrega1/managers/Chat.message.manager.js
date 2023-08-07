@@ -1,4 +1,4 @@
-const chatMessageModel = require('../models/chat.message.model')
+const chatMessageModel = require('../models/chat.model')
 
 class ChatMessageManager {
 
