@@ -5,6 +5,6 @@ const schema = new Schema ({
     products: {type: [String], default: []}
 })
 
-const cartModel = model ('carts', schema)
+const cartModel = model ('carrito', schema)
 
 module.exports = cartModel

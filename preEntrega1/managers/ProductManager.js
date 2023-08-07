@@ -7,9 +7,9 @@ function getRandomNumber(min, max) {
 }
 
 class ProductManager {
-  constructor(filename) {
-    this.id = getRandomNumber(1, 10)
-  }
+//  constructor(filename) {
+//    this.id = getRandomNumber(1, 10)
+//  }
 
   getAll() {
     return productModel.find().lean()
