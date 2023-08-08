@@ -38,12 +38,12 @@ router.get ('/realtimeproducts', async (req, rest) => {
     user: {
       ...req.user,
       isAdmin: req.user.role == 'admin'
-    },
+    },  
     style: 'home'
   })
 })
 
-router.get('/carts', (req, res) => {
+router.get('/cart', (req, res) => {
   res.render('carrito', {
     numItems: 2,
     title: 'Cart'

@@ -1,7 +1,7 @@
 const productManager = require('../managers/ProductManager')
 const cartManager = require('../managers/CartManager')
 //const productManager = new ProductManager('products.json')
-const cartManager = new CartManager('cart.json')
+//const cartManager = new CartManager('cart.json')
 const chatMessageManager = require ('../managers/Chat.message.manager')
 
 async function socketManager(socket) {
