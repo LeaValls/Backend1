@@ -43,8 +43,8 @@ router.get ('/realtimeproducts', async (req, rest) => {
   })
 })
 
-router.get('/cart', (req, res) => {
-  res.render('cart', {
+router.get('/carts', (req, res) => {
+  res.render('carrito', {
     numItems: 2,
     title: 'Cart'
   });

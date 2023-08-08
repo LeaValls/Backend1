@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const productManager = require('../../managers/ProductManager')
 
+
 const router = Router()
 
 console.log("product manager id: ", productManager.id)
