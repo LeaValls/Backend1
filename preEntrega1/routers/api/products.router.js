@@ -27,27 +27,33 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.get('/', async (req, res) => {
-  const { search, max, min, limit } = req.query
-  console.log(`Buscando productos con ${search} y entre [${min}, ${max}]`)
-  const products = await productManager.getAll()
+router.get('/products', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-  console.log(products)
+    const totalProducts = await Product.countDocuments();
+    const totalPages = Math.ceil(totalProducts / limit);
 
-  let filtrados = products
+    const products = await Product.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-  if (search) {
-    
-    filtrados = filtrados
-      .filter(p => p.keywords.includes(search.toLowerCase()) || p.title.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase()))
-  } 
-
-  if (min || max) {
-    filtrados = filtrados.filter(p => p.price >= (+min || 0) && p.price <= (+max || Infinity))
+    res.render('products', { products, page, totalPages });
+  } catch (error) {
+    res.status(500).json({ status: 'error', error: error.message });
   }
+});
 
-  res.send(filtrados)
-})
+
+router.get('/carts/:cid', async (req, res) => {
+  try {
+    const cart = await Cart.findById(req.params.cid).populate('products');
+    res.render('cart', { cart });
+  } catch (error) {
+    res.status(500).json({ status: 'error', error: error.message });
+  }
+});
 
 router.post('/', async (req, res) =>  {
   const { body, io } = req
@@ -63,9 +69,7 @@ router.post('/', async (req, res) =>  {
 })
 
 router.delete('/:id', async (req, res) => {
-  const { id } = req.params
-
- 
+  const { id } = req.params 
 
   const result = await productManager.delete(id)
   console.log(result)

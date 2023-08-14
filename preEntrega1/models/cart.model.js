@@ -16,7 +16,7 @@ schema.pre("findOne", function () {
   this.populate({ path: 'user', select: ['email', 'firstname', 'lastname'] })
 })
 
-const cartModel = model('carts', schema)
+const cartModel = model('cart', schema)
 
 
 module.exports = cartModel
