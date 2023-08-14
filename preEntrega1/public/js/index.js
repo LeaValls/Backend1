@@ -2,7 +2,7 @@ console.log('implementacion de websockets')
 const socket = io()
 
 const cartBadgeEl = document.querySelector('#cart-badge')
-
+const realTimeProducts = document.querySelector('#realTimeProducts')
 
 
 
@@ -10,9 +10,6 @@ function addToCart(productId) {
   socket.emit('addToCart', { userId: 1, productId })
 }
 
-socket.on('productsInCart', (products) => {
-  cartBadgeEl.innerHTML = products.length
-})
 
 function addProductToDOM({ price, id, title, description, keywords }) {
   const div = document.createElement('div')

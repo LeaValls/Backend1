@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const CartManager = require('../../managers/CartManager');
+const cartManager = require('../../managers/CartManager');
 
-router.get('/', CartManager.getCarts);
-router.post('/', CartManager.addCart);
-router.get('/:cid', CartManager.getCartById);
-router.post('/:cid/products/:pid', CartManager.addProductToCart);
+router.get('/', cartManager.getCarts);
+router.post('/', cartManager.addCart);
+router.get('/:cid', cartManager.getCartById);
+router.post('/:cid/products/:pid', cartManager.addProductToCart);
 
 module.exports = router;
 

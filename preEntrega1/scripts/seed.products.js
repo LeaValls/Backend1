@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const productModel = require('../models/product.model')
 
 async function seed() {
-  await mongoose.connect("mongodb+srv://app:vXqYhVf2Qj1FXYXL@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy")
+  await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy")
 
   const filepath = path.join(__dirname, '../', 'data/product.json')
   const data = await fs.readFile(filepath, 'utf-8')

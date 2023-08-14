@@ -9,6 +9,7 @@ async function socketManager(socket) {
 
   const messages = await chatMessageManager.getAll()
   console.log(messages)
+  socket.emit('chat-messages', messages)
   
   socket.on('chat-message', async (msg) => {
     

@@ -1,24 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Productos en Tiempo Real</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-  <h1>Productos en Tiempo Real</h1>
-  <ul id="productList">
-    {{#each products}}
-    <li>{{this.title}} - {{this.price}}</li>
-    {{/each}}
-  </ul>
-
-  <form id="productForm">
-    <input type="text" name="title" placeholder="Nombre del producto" required>
-    <input type="number" name="price" placeholder="Precio" required>
-    <button type="submit">Agregar Producto</button>
-  </form>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/main.js"></script>
-</body>
-</html>
+<div id="realTimeProducts" class="uk-child-width-1-4@m" uk-grid>
+  {{#each products}}
+    <div>
+      <div class="uk-card uk-card-default">
+        <div class="uk-card-media-top">
+          <img alt="foto producto" />
+        </div>
+        <div class="uk-card-body">
+          <h3 class="uk-card-title">{{ this.title }}</h3>
+          <h5> ${{this.price}}</h5>
+          {{#each this.keywords}}
+            <span class="uk-badge">{{this}}</span>
+          {{/each}}
+          <p>{{this.description}}</p>
+          <button onclick="addToCart({{this.id}})" class="uk-button uk-button-secondary uk-button-small">Agregar al carrito</button>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>

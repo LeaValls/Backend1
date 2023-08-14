@@ -24,7 +24,7 @@ const usersRecords = generateUsersRecord(numberOfUsers);
 
 
 async function main() {
-  await mongoose.connect("mongodb+srv://app2:3FF28JfLw8z5Sh1m@cluster0.go6w7.mongodb.net/ecommerce?retryWrites=true&w=majority")
+  await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy")
   
 
   const result = await userModel.find({ lastname: "Doe" }).explain("executionStats")

@@ -2,6 +2,8 @@ const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'users' },
+  postAddress: { type: Schema.Types.ObjectId, ref: 'addresses' },
+  total: Number,
   products: { 
     type: [{
       product: { type: Schema.Types.ObjectId, ref: 'products' },
@@ -9,14 +11,9 @@ const schema = new Schema({
     }],
     default: []
   },
-  createdDate: { type: Number, default: Date.now() }
+  estimatedDelivery: Number
 })
 
-schema.pre("findOne", function () {
-  this.populate({ path: 'user', select: ['email', 'firstname', 'lastname'] })
-})
+const purchaseOrderModel = model('orders', schema)
 
-const cartModel = model('carts', schema)
-
-
-module.exports = cartModel
+module.exports = purchaseOrderModel

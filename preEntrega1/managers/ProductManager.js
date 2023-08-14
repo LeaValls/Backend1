@@ -7,12 +7,16 @@ function getRandomNumber(min, max) {
 }
 
 class ProductManager {
-//  constructor(filename) {
-//    this.id = getRandomNumber(1, 10)
-//  }
+  constructor(filename) {
+    this.id = getRandomNumber(1, 10)
+  }
 
   getAll() {
     return productModel.find().lean()
+  }
+
+  getAllPaged(page = 1, limit = 5) {
+    return productModel.paginate({}, { limit, page, lean: true })
   }
 
   async getById(id) {
