@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
 
-  const { page, size } = req.query
+  const { page=1, size=5 } = req.query
   const { docs: products, ...pageInfo } = await productManager.getAllPaged(page, size)
 
   pageInfo.prevLink = pageInfo.hasPrevPage ? `http://localhost:8080/?page=${pageInfo.prevPage}&size=${size}` : ''

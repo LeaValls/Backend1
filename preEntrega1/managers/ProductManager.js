@@ -15,7 +15,7 @@ class ProductManager {
     return productModel.find().lean()
   }
 
-  getAllPaged(page = 1, limit = 5) {
+  getAllPaged(page=1, limit=5) {
     return productModel.paginate({}, { limit, page, lean: true })
   }
 
