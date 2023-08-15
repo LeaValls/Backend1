@@ -3,10 +3,10 @@ const router = express.Router();
 const cartManager = require('../../managers/CartManager');
 
 
-//router.get('/', cartManager.getCarts);
-//router.post('/', cartManager.addCart);
-//router.get('/:cid', cartManager.getCartById);
-//router.post('/:cid/products/:pid', cartManager.addProductToCart);
+router.get('/', cartManager.getCarts);
+router.post('/', cartManager.addCart);
+router.get('/:cid', cartManager.getCartById);
+router.post('/:cid/products/:pid', cartManager.addProductToCart);
 
 router.delete('/:cid/:pid', async (req, res) => {
     try {
@@ -75,7 +75,7 @@ router.delete('/:cid/:pid', async (req, res) => {
     }
   });
   
-  // Vista para visualizar un carrito específico
+  
   router.get('/carts/:cid', async (req, res) => {
     try {
       const cart = await Cart.findById(req.params.cid).populate('products');
