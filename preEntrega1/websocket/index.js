@@ -23,12 +23,12 @@ async function socketManager(socket) {
   })
 
 
-//   socket.on('addToCart', async ({ userId, productId }) => {
-//    await cartManager.addProduct(userId, productId)
-//    const products = await cartManager.getProductsByUserId(userId)
+   socket.on('addToCart', async ({ userId, productId }) => {
+    await cartManager.addProduct(userId, productId)
+    const products = await cartManager.getProductsByUserId(userId)
 
-//    socket.emit('productsInCart', products)
-//  })
+    socket.emit('productsInCart', products)
+  })
 }
 
 module.exports = socketManager

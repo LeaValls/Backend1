@@ -50,6 +50,7 @@ router.get ('/realtimeproducts', async (req, res) => {
 })
 
 router.get('/cart', (req, res) => {
+  
   res.render('carrito', {
     numItems: 2,
     title: 'Cart'
