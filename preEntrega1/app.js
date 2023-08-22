@@ -5,6 +5,8 @@
   const handlebars = require('express-handlebars')
   const { Server } = require("socket.io");
   const mongoose = require('mongoose')
+  const session = require('express-session')
+  const MongoStore = require('connect-mongo')
 
   const Routes = require('./routers/index')
   const socketManager = require('./websocket')
@@ -28,13 +30,28 @@
     app.use(express.json())
     app.use('/static', express.static(path.join(__dirname + '/public')))
 
+    app.use(session({
+      secret: 'esunsecreto',
+      resave: true,
+      saveUninitialized: true,
+      
+      store: MongoStore.create({
+        mongoUrl: "mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy",
+        ttl: 60 * 60
+      })
+    }))
+
 
     app.use((req, res, next) => {
 
+      console.log(req.session)
 
-      req.user = {
-        name: "Jonh",
-        role: "admin"
+      
+      if (req.session?.user) {
+        req.user = {
+          name: req.session.user.name,
+          role: "admin"
+        }
       }
 
       next()

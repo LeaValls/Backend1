@@ -8,6 +8,18 @@ router.post('/', cartManager.addCart);
 router.get('/:cid', cartManager.getCartById);
 router.post('/:cid/products/:pid', cartManager.addProductToCart);
 
+router.post('/carts/:cid/product/:pid', async (req, res) => {
+  const { cid, pid } = req.params;
+
+  try {
+    await cartManager.addProductToCart(cid, pid);
+    res.json({ message: 'Product added to cart successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+
 router.delete('/:cid/:pid', async (req, res) => {
     try {
       const cart = await Cart.findById(req.params.cid);
