@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 async function main() {
-  await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy")
+  await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majority")
 
   const cartModel = require('../models/cart.model')
   const usersModel = require('../models/user.model')

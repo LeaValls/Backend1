@@ -5,6 +5,7 @@ const userManager = require('../managers/UserManager')
 const isAuth = require('../middlewares/auth.middleware')
 
 
+
 const router = Router();
 
 
@@ -35,8 +36,13 @@ router.get('/', async (req, res) => {
   })
 })
 
-router.get('/chat', (req, rest) => {
-  rest.render('chat')
+router.get('/chat', isAuth, (req, res) => {
+  res.render('chat', { 
+      user: req.user ?  {
+      ...req.user,
+      isAdmin: req.user?.role == 'admin',
+    } : null,
+  })
 })
 
 router.get ('/realtimeproducts', async (req, res) => {
@@ -55,108 +61,27 @@ router.get ('/realtimeproducts', async (req, res) => {
 
 
 
-router.get('/cart', (req, res) => {
+router.get('/carts', (req, res) => {
   
   res.render('carrito', {
     numItems: 2,
-    title: 'Cart'
-  });
-});
+    title: 'Carrito',
+    user: req.user ?  {
+      ...req.user,
+      isAdmin: req.user?.role == 'admin',
+    } : null,
+  })
+})
 
 router.get('/profile', isAuth, (req, res) => {
   res.render('profile', {
-    ...req.session.user
+    user: req.user ?  {
+      ...req.user,
+      isAdmin: req.user?.role == 'admin',
+    } : null,
   })
 })
-router.get('/signup', (_, res) => res.render('signup'))
-router.post('/signup', async (req, res) => {
-  const user = req.body
-  
-  console.log(user)
-
-  const existing = await userManager.getByEmail(user.email)
-
-  if (existing) {
-    return res.render('signup', {
-      error: 'El email ya existe'
-    })
-  }
-
-  // crear al usuario
-  try {
-    const newUser = await userManager.create(user)
-
-    req.session.user = {
-      name: newUser.firstname,
-      id: newUser._id,
-      ...newUser._doc
-    }
-
-    console.log(req.session)
-
-    req.session.save((err) => {
-      res.redirect('/')
-    })
-
-  } catch(e) {
-    return res.render('signup', {
-      error: 'Ocurrio un error. Intentalo mas tarde'
-    })
-  }
-
-  
-
-})
-
-router.get('/login', (_, res) => res.render('login'))
-router.post('/login', async (req, res) => {
-  const { email } = req.body
-
-  try {
-
-    const user = await userManager.getByEmail(email)
-
-    if (!user) {
-      return res.render('login', { error: 'El usuario no existe' })
-    }
-
-    req.session.user = {
-      name: user.firstname,
-      id: user._id,
-        ...user
-    }
-
-    req.session.save((err) => {
-      if(!err) {
-        res.redirect('/')
-      }
-    })
-  } catch(e) {
-    res.render('login', { error: 'Ha ocurrido un error' })
-  }
-
-  // guardo la session con la informacion del usuario
 
 
-  
-})
-router.get('/logout', isAuth, (req, res) => {
-  const { user } = req.cookies
-
-  // borrar la cookie
-  res.clearCookie('user')
-
-  req.session.destroy((err) => {
-    if(err) {
-      return res.redirect('/error')
-    }
-
-    res.render('logout', {
-      user: req.user.name
-    })
-
-    req.user = null
-  })
-})
 
 module.exports = router;

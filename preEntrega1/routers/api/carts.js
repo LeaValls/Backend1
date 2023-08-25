@@ -88,16 +88,7 @@ router.delete('/:cid/:pid', async (req, res) => {
   });
   
   
-  router.get('/carts/:cid', async (req, res) => {
-    try {
-      const cart = await Cart.findById(req.params.cid).populate('products');
-      res.render('cart', { cart });
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
-  
-  
+    
 
 
 

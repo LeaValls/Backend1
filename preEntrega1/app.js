@@ -5,18 +5,21 @@
   const handlebars = require('express-handlebars')
   const { Server } = require("socket.io");
   const mongoose = require('mongoose')
+  const cookieParser = require('cookie-parser')
   const session = require('express-session')
   const MongoStore = require('connect-mongo')
+  const passport = require('passport')
 
   const Routes = require('./routers/index')
   const socketManager = require('./websocket')
+  const initPassportLocal = require('./config/passport.local.config.js')
 
   try {
 
     // ${SCHEMA}://{USER}:{PASSWORD}@{HOSTNAME}:${PORT}/${DATABASE} -> LOCAL mongodb://localhost:27017/ecommerce
     // mongoose.connect("mongodb://localhost:27017/ecommerce")
 
-    await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy")
+    await mongoose.connect("mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majority")
 
     const app = express()
     const server = http.createServer(app)
@@ -29,6 +32,7 @@
     app.use(express.urlencoded({ extended: true }))
     app.use(express.json())
     app.use('/static', express.static(path.join(__dirname + '/public')))
+    app.use(cookieParser('esunsecreto'))
 
     app.use(session({
       secret: 'esunsecreto',
@@ -36,25 +40,22 @@
       saveUninitialized: true,
       
       store: MongoStore.create({
-        mongoUrl: "mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majorityy",
+        mongoUrl: "mongodb+srv://app:5UJvYAsuYJ9v461V@cluster0.ryzcf1s.mongodb.net/ecommerce?retryWrites=true&w=majority",
         ttl: 60 * 60
       })
     }))
 
+    initPassportLocal()
+    
+    app.use(passport.initialize())
+    app.use(passport.session())
+
 
     app.use((req, res, next) => {
 
-      console.log(req.session)
-
-      
-      if (req.session?.user) {
-        req.user = {
-          name: req.session.user.name,
-          role: "admin"
-        }
-      }
-
+      console.log(req.session, req.user)
       next()
+
     })
 
 

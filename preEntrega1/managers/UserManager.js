@@ -20,9 +20,7 @@ class UserManager {
   }
 
   async save(id, user) {
-    const existing = await this.getById(id)
-
-    if (!existing) {
+    if (!await this.getById(id)) {
       return
     }
 
@@ -32,17 +30,20 @@ class UserManager {
       lastname,
       username,
       gender,
-      age
+      age,
+      password
     } = user
 
-    existing.email = email
-    existing.firstname = firstname
-    existing.lastname = lastname
-    existing.username = username
-    existing.gender = gender
-    existing.age = age
-
-    await existing.updateOne({ _id, existing: _id }, existing)
+    await userModel.updateOne({ _id: id }, { 
+      $set: {
+        email,
+        firstname,
+        lastname,
+        gender,
+        age,
+        password
+      } 
+    })
   }
 
   async delete(id) {
