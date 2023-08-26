@@ -4,6 +4,8 @@ const passport = require('passport')
 const userManager = require('../managers/UserManager')
 const isAuth = require('../middlewares/auth.middleware')
 const { hashPassword, isValidPassword } = require('../utils/password.utils')
+const { GITHUB_STRATEGY_NAME } = require("../config/config.passwords");
+const { generateToken } = require("../utils/generate.token");
 
 const router = Router()
 
@@ -155,6 +157,33 @@ const resetpassword = async (req, res) => {
 router.get('/signup', (_, res) => res.render('signup'))
 router.get('/login', (_, res) => res.render('login'))
 router.get('/resetpassword', (_, res) => res.render('resetpassword'))
+
+router.get(
+  "/github",
+  passport.authenticate(GITHUB_STRATEGY_NAME),
+  (_, res) => {}
+);
+
+router.get(
+  "/githubSessions",
+
+  passport.authenticate(GITHUB_STRATEGY_NAME),
+
+  (req, res) => {
+      const user = req.user;
+
+      
+      req.session.user = {
+          id: user.id,
+          name: user.firstname,
+          role: user?.role ?? "Customer",
+          email: user.email,
+      };
+
+      res.redirect("/");
+  }
+);
+
 
 router.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/profile',

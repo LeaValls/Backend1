@@ -1,5 +1,6 @@
 const passport = require('passport')
 const local = require('passport-local')
+const github = require('./passport.github')
 
 const userManager = require('../managers/UserManager')
 const { hashPassword, isValidPassword } = require('../utils/password.utils')
@@ -7,7 +8,12 @@ const { hashPassword, isValidPassword } = require('../utils/password.utils')
 const LocalStrategy = local.Strategy
 
 const signup = async (req, email, password, done) => {
-  const { email: _email, password: _password, password2: _password2, ...user } = req.body
+  const { 
+    email: _email, 
+    password: _password, 
+    password2: _password2, 
+    ...user 
+  } = req.body;
 
   const _user = await userManager.getByEmail(email)
 
@@ -19,10 +25,10 @@ const signup = async (req, email, password, done) => {
   try {
     const newUser = await userManager.create({
       ...user,
-      password: hashPassword(password)
-    })
+      password: hashPassword(password),
+    });
 
-    // TODO: Borrar el password
+    
     return done(null, {
       name: newUser.firstname,
       id: newUser._id,
@@ -52,7 +58,7 @@ const login = async (email, password, done) => {
       return done(null, false)
     }
 
-    // TODO: borrar password
+    
     done(null, _user)
 
   } catch(e) {
@@ -61,20 +67,17 @@ const login = async (email, password, done) => {
   }
 }
 
-const init = () => {
-  /// options por default
-  /// { usernamField: 'username', passwordField: 'password' }
-  passport.use('local-signup', new LocalStrategy({ usernameField: 'email', passReqToCallback: true }, signup))
-  passport.use('local-login', new LocalStrategy({ usernameField: 'email' }, login))
-  passport.serializeUser((user, done) => {
-    done(null, user._id)
-  })
+
   passport.deserializeUser(async (id, done) => {
     const user = await userManager.getById(id)
 
     // TODO: borrar el password
     done(null, user)
   })
-}
 
-module.exports = init
+
+module.exports = {
+  LocalStrategy,
+  signup,
+  login,
+};

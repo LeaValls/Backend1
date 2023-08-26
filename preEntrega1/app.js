@@ -12,7 +12,7 @@
 
   const Routes = require('./routers/index')
   const socketManager = require('./websocket')
-  const initPassportLocal = require('./config/passport.local.config.js')
+  const initPassportLocal = require('./config/passport.init')
 
   try {
 
