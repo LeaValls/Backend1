@@ -1,15 +1,14 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } =require('mongoose')
 
 const schema = new Schema({
   firstname: String,
-  lastname: { type: String, index: true },
-  email: { type: String, index: true },
+  lastname: String,
+  email: String,
+  age: Number,
   password: String,
-  role: { type: String, default: 'Customer' },
-  gender: String,
-  age: { type: Number },
-  createdDate: { type: Number, default: Date.now() },
-  address: { type: Schema.Types.ObjectId, ref: 'addresses' }
+  admin: {type: Boolean, default: false},
+  user: {type: Boolean, default: true},
+  createDate: {type: Number, default: Date.now()}
 })
 
 const userModel = model('users', schema)

@@ -1,10 +1,29 @@
 const { Router } = require("express");
+const passport = require("passport")
 
 const userManager = require("../../managers/UserManager");
 const { generateToken } = require("../../utils/generate.token");
 const { isValidPassword } = require("../../utils/password.utils");
 
 const router = Router();
+
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }), (req, res) => { })
+
+router.get('/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    async (req, res) => {
+        // se guarda la session del usuario
+        req.session.user = req.user
+
+        req.session.save((err) => {
+            if (!err) {
+                return res.redirect('/')
+            }
+
+            console.log(err)
+            res.redirect('/login')
+        })
+    })
 
 // creamos una ruta para authenticar usuarios de API
 // mandamos un post request a /api/login
@@ -18,26 +37,72 @@ router.post("/login", async (req, res) => {
         console.log(password, user);
 
         if (!user || !isValidPassword(password, user?.password)) {
-            return res.send({
-                status: "failure",
-                error: "Failed login",
-            });
+            console.log('no coincide password')
+            return res.status(401).send({
+                status: 'failure',
+                error: 'Failed login'
+            })
         }
 
-        const token = generateToken(user);
+        const token = generateToken(user)
 
-        return res.send({
-            status: "success",
-            message: token,
-        });
+        return res.cookie('jwtToken', token, {
+            maxAge: 60 * 60 * 1000,
+            httpOnly: true
+        }).send({
+            status: 'success',
+            message: token
+        })
+
     } catch (error) {
-        console.log(error);
-
-        res.send({
-            status: "failure",
-            error,
+        console.log(error)
+        res.status(500).send({
+            status: 'failure',
+            error
         });
     }
 });
+
+router.get(
+    '/user',
+    (req, res, next) => {
+        const auth = passport.authenticate('jwt', { session: false },
+            (err, user, info) => {
+                console.log(err, user, info)
+                // aqui hago el tratamiento de los errores
+                // una vez que el metodo done se ejecuta, cae aqui
+                if (err) return res.status(500).send({
+                    error: err,
+                    status: 'failure'
+                })
+
+                if (!user) {
+                    return res.status(401).send({
+                        error: info.message,
+                        success: 'failure'
+                    })
+                }
+
+                req.user = user
+                next()
+            })
+
+        try {
+            auth(req, res, next)
+        } catch {
+            return res.status(401).send({
+                error: 'Token invalido',
+                success: 'failure'
+            })
+        }
+
+
+    },
+    (req, res) => {
+        console.log(req.user)
+
+        res.sendStatus(200)
+    })
+
 
 module.exports = { jwtRoutes: router };

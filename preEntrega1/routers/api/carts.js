@@ -1,96 +1,104 @@
-const express = require('express');
-const router = express.Router();
-const cartManager = require('../../managers/CartManager');
+const { Router } = require('express')
+const cartManager = require('../../managers/CartManager')
+const productManager = require('../../managers/ProductManager')
+const CustomRouter = require('./custom.router')
 
+class CartRouter extends CustomRouter {
 
-router.get('/', cartManager.getCarts);
-router.post('/', cartManager.addCart);
-router.get('/:cid', cartManager.getCartById);
-router.post('/:cid/products/:pid', cartManager.addProductToCart);
+  init() {
+    // se ejecuta solamente si alguna ruta de abajo contiene el param :cartId
+    this.router.param('cartId', async (req, res, next, cartId) => {
+      try {
+        const cart = await cartManager.getById(cartId)
 
-router.post('/carts/:cid/product/:pid', async (req, res) => {
-  const { cid, pid } = req.params;
+        if (!cart) {
+          return res.status(404).send({
+            success: false,
+            error: "Cart not found"
+          })
+        }
 
-  try {
-    await cartManager.addProductToCart(cid, pid);
-    res.json({ message: 'Product added to cart successfully' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+        req.cart = cart
 
-
-router.delete('/:cid/:pid', async (req, res) => {
-    try {
-      const cart = await Cart.findById(req.params.cid);
-      cart.products.pull(req.params.pid);
-      await cart.save();
-      res.json({ status: 'success', message: 'Product removed from cart' });
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
-
-  router.put('/:cid', async (req, res) => {
-    try {
-      const cart = await Cart.findById(req.params.cid);
-      cart.products = req.body.products;
-      await cart.save();
-      res.json({ status: 'success', message: 'Cart updated' });
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
-
-  router.put('/:cid/products/:pid', async (req, res) => {
-    try {
-      const cart = await Cart.findById(req.params.cid);
-      const productIndex = cart.products.findIndex(p => p._id.toString() === req.params.pid);
-      if (productIndex !== -1) {
-        cart.products[productIndex].quantity = req.body.quantity;
-        await cart.save();
-        res.json({ status: 'success', message: 'Product quantity updated' });
-      } else {
-        res.status(404).json({ status: 'error', message: 'Product not found in cart' });
+        next()
+      } catch (e) {
+        res.status(500).send({
+          success: false,
+          error: e.stack
+        })
       }
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
+    })
 
-  router.delete('/:cid', async (req, res) => {
-    try {
-      const cart = await Cart.findById(req.params.cid);
-      cart.products = [];
-      await cart.save();
-      res.json({ status: 'success', message: 'All products removed from cart' });
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
+    this.get('/', ["ADMIN"], async (req, res) => {
+      try {
+        const carts = await cartManager.getAll()
 
-  router.get('/products', async (req, res) => {
-    try {
-      const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 10;
-  
-      const totalProducts = await Product.countDocuments();
-      const totalPages = Math.ceil(totalProducts / limit);
-  
-      const products = await Product.find()
-        .skip((page - 1) * limit)
-        .limit(limit);
-  
-      res.render('products', { products, page, totalPages });
-    } catch (error) {
-      res.status(500).json({ status: 'error', error: error.message });
-    }
-  });
-  
-  
-    
+        res.send(carts)
+      } catch (e) {
+        res.status(500).send({
+          error: e.stack
+        })
+      }
+    })
 
+    this.get('/:cartId/products', ["CUSTOMER", "ADMIN"], async (req, res) => {
+      const { cart } = req
+      try {
+        console.log(cart)
 
+        res.sendSuccess(cart.products)
+      } catch (e) {
+        res.sendError(e)
+      }
+    })
 
-module.exports = router;
+    this.put('/:cartId/products/:productId', ["CUSTOMER", "ADMIN"], async (req, res) => {
+      const { cartId, productId } = req.params
+      try {
+        if (!await productManager.getById(productId)) {
+          return res.sendStatus(404)
+        }
 
+        const cart = await cartManager.getById(cartId)
+
+        if (!cart) {
+          return res.sendStatus(404)
+        }
+
+        await cartManager.addProductToCart(cartId, productId)
+
+        res.send({
+          success: true
+        })
+
+      } catch (e) {
+        res.sendError(e)
+      }
+    })
+
+    this.delete('/:cartId/products/:productId', ["CUSTOMER", "ADMIN"], async (req, res) => {
+      const { cartId, productId } = req.params
+      try {
+        if (!await productManager.getById(productId)) {
+          return res.sendStatus(404)
+        }
+
+        const cart = await cartManager.getById(cartId)
+
+        if (!cart) {
+          return res.sendStatus(404)
+        }
+
+        await cartManager.deleteProductFromCart(cartId, productId)
+
+        res.sendSuccess('OK')
+      } catch (e) {
+        res.sendError(e)
+      }
+    })
+  }
+}
+
+module.exports = {
+  custom: new CartRouter()
+}

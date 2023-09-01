@@ -8,12 +8,12 @@ const { hashPassword, isValidPassword } = require('../utils/password.utils')
 const LocalStrategy = local.Strategy
 
 const signup = async (req, email, password, done) => {
-  const { 
-    email: _email, 
-    password: _password, 
-    password2: _password2, 
-    ...user 
-  } = req.body;
+  const {
+    email: _email,
+    password: _password,
+    password2: _password2,
+    ...user
+} = req.body;
 
   const _user = await userManager.getByEmail(email)
 
@@ -24,13 +24,16 @@ const signup = async (req, email, password, done) => {
 
   try {
     const newUser = await userManager.create({
-      ...user,
-      password: hashPassword(password),
-    });
+      firstname: newUser.firstname,
+      lastname: newUser.lastname,
+      email: newUser.email,
+      age: newUser.age,
+      password: hashPassword(password)
+    })
 
     
     return done(null, {
-      name: newUser.firstname,
+      firstname: newUser.firstname,
       id: newUser._id,
       ...newUser._doc
     })
@@ -67,13 +70,6 @@ const login = async (email, password, done) => {
   }
 }
 
-
-  passport.deserializeUser(async (id, done) => {
-    const user = await userManager.getById(id)
-
-    // TODO: borrar el password
-    done(null, user)
-  })
 
 
 module.exports = {
